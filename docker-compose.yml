@@ -1,19 +1,67 @@
-version: '3.8'
+version: '3'
 
 services:
   app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: cuaca-api
+    build: .
+    image: cuaca-monitoring
+    container_name: cuaca-monitoring
     restart: unless-stopped
-    working_dir: /var/www/html
+    tty: true
+    environment:
+      SERVICE_NAME: app
+  
+    working_dir: /var/www/html/cuaca-monitoring
     volumes:
-      - ./:/var/www/html
-    ports:
-      - "8080:80"  # Nginx berjalan di port 80 di dalam container
+      - .:/var/www/html/cuaca-monitoring
+      - ./storage/php.ini:/usr/local/etc/php/conf.d/local.ini
     networks:
-      - laravel
+      - cuaca-monitoring
 
+  webserver:
+    image: nginx:alpine
+    container_name: nginxcuaca-monitoring
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "8080:80"
+    volumes:
+      - .:/var/www/html/cuaca-monitoring
+      - ./storage/:/etc/nginx/conf.d/
+    networks:
+      - cuaca-monitoring
+  
+  # db:
+  #   image: mysql5.7
+  #   container_name: dbcuaca-monitoring
+  #   restart: always
+  #   tty: true
+  #   ports:
+  #     - "83306:3306"
+  #   volumes:
+  #     - libdata:/var/lib/mysql
+  #   environment:
+  #     MYSQL_PASSWORD: cuaca-monitoring
+  #     MYSQL_ROOT_PASSWORD: cuaca-monitoring
+  #     SERVICE_TAGS: dev 
+  #     SERVICE_NAME: mysql
+  #   networks:
+  #     - cuaca-monitoring
+
+  # phpmyadmin:
+  #   image: phpmyadmin/phpmyadmin
+  #   container_name: pmacuaca-monitoring
+  #   links:
+  #     - db
+  #   restart: always
+  #   ports:
+  #     -8081:80
+  #   networks:
+  #     - cuaca-monitoring
+    
 networks:
-  laravel:
+  cuaca-monitoring:    
+    driver: bridge
+
+# volumes:
+#   libdata:
+#     driver: local
