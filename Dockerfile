@@ -50,6 +50,6 @@ USER www
 EXPOSE 80
 
 # Jalankan Nginx dan PHP-FPM ketika container dijalankan
-CMD ["sh", "-c", "service nginx start && php-fpm"]
+CMD ["php-fpm"]
 
 
