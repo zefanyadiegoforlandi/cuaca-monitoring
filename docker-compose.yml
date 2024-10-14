@@ -23,13 +23,10 @@ services:
     restart: unless-stopped
     tty: true
     ports:
-      - "8080:80"   # Port HTTP
-      - "8081:443"  # Port HTTPS
+      - "8080:80"
     volumes:
       - .:/var/www/html/cuaca-monitoring
       - ./storage/:/etc/nginx/conf.d/
-      - /etc/letsencrypt/live/athe.my.id:/etc/ssl/certs  # Mount sertifikat SSL
-      - /etc/letsencrypt/archive/athe.my.id:/etc/ssl/certs/archive  # Mount kunci privat
     networks:
       - cuaca-monitoring
   
