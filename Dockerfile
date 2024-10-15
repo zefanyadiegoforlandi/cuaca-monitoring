@@ -52,5 +52,6 @@ USER www
 # Expose port 80 untuk Nginx
 EXPOSE 80
 
+
 # Jalankan Nginx dan PHP-FPM ketika container dijalankan
 CMD ["php-fpm"]
