@@ -17,6 +17,7 @@ class Sensors extends Model
         'sensor_id',
         'user_id',
         'name_sensor',
+        'activation_date',
     ];
 
     // Nonaktifkan timestamps jika tidak digunakan

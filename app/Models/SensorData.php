@@ -18,6 +18,7 @@ class SensorData extends Model
         'kualitas_udara',
         'temperature',
         'humidity',
+        'post_date',
     ];
 
     // Nonaktifkan timestamps jika tidak digunakan
