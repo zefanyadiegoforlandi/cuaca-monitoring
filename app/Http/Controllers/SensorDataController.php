@@ -47,13 +47,18 @@ class SensorDataController extends Controller
                 'humidity' => 'required|numeric',
             ]);
 
-            $sensorData = SensorData::create($request->all());
+            // Menambahkan post_date ke data yang akan disimpan
+            $data = $request->all();
+            $data['post_date'] = now(); // Menggunakan waktu saat ini untuk post_date
+
+            $sensorData = SensorData::create($data);
 
             return response()->json($sensorData, 201);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 400);
         }
     }
+
 
     // Menampilkan data sensor berdasarkan ID
     public function show($sensor_data_id)

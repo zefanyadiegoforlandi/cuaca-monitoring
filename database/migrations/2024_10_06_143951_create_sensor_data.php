@@ -19,7 +19,7 @@ return new class extends Migration
             $table->float('kualitas_udara'); // Kualitas udara
             $table->float('temperature'); // Suhu
             $table->float('humidity'); // Kelembapan
-            $table->timestamp('post_date')->default(now()); // Mengubah ke timestamp dengan default
+            $table->timestamp('post_date'); // Mengubah ke timestamp dengan default
             $table->timestamps(); // Kolom created_at dan updated_at
 
             // Menambahkan foreign key

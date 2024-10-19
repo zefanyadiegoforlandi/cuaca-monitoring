@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('sensor_id', 255)->primary(); // Menetapkan sensor_id sebagai primary key
             $table->unsignedBigInteger('user_id'); // ID pengguna yang memiliki sensor
             $table->string('name_sensor'); // Nama sensor
-            $table->timestamp('activation_date')->default(now()); // Mengubah ke timestamp dengan default
+            $table->timestamp('activation_date'); // Mengubah ke timestamp dengan default
             $table->timestamps(); // Kolom created_at dan updated_at
 
             // Menambahkan foreign key
