@@ -15,8 +15,7 @@ class SensorData extends Model
     // Menentukan kolom yang dapat diisi
     protected $fillable = [
         'sensor_id',
-        'altitude',
-        'pressure',
+        'kualitas_udara',
         'temperature',
         'humidity',
     ];

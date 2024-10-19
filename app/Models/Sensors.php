@@ -14,6 +14,7 @@ class Sensors extends Model
 
     // Menentukan kolom yang dapat diisi
     protected $fillable = [
+        'sensor_id',
         'user_id',
         'name_sensor',
     ];

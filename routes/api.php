@@ -14,13 +14,6 @@ Route::apiResource('users', UsersController::class);
 Route::apiResource('sensors', SensorsController::class);
 Route::apiResource('sensordata', SensorDataController::class);
 
-// routes/api.php
-
-// routes/api.php
-
-
-Route::get('/proxy/sensordata', [ProxySensorDataController::class, 'getSensorData']);
-
 
 
 

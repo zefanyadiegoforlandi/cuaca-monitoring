@@ -15,23 +15,49 @@ class SensorsController extends Controller
 
     // Menyimpan sensor baru
     public function store(Request $request)
+{
+    try {
+        $request->validate([
+            'user_id' => 'required|integer', // Validasi user_id sebagai integer
+            'name_sensor' => 'required|string|max:255',
+        ]);
+
+        // Mencari sensor_id yang tidak terpakai
+        $existingSensors = Sensors::pluck('sensor_id')->toArray(); // Mendapatkan semua sensor_id yang ada
+        $nextId = $this->getNextSensorId($existingSensors);
+
+        // Menyimpan sensor baru
+        $sensor = Sensors::create([
+            'sensor_id' => $nextId,
+            'user_id' => $request->user_id,
+            'name_sensor' => $request->name_sensor,
+            'activation_date' => now(), // Menambahkan nilai untuk activation_date
+        ]);
+
+        return response()->json($sensor, 201);
+    } catch (\Exception $e) {
+        return response()->json(['error' => $e->getMessage()], 400);
+    }
+}
+
+    /**
+     * Mendapatkan sensor_id berikutnya yang tidak terpakai
+     */
+    private function getNextSensorId(array $existingSensors)
     {
-        try {
-            $request->validate([
-                'user_id' => 'required|integer', // Validasi user_id sebagai integer
-                'name_sensor' => 'required|string|max:255',
-            ]);
-    
-            $sensor = Sensors::create([
-                'user_id' => $request->user_id,
-                'name_sensor' => $request->name_sensor,
-            ]);
-    
-            return response()->json($sensor, 201);
-        } catch (\Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 400);
+        $i = 1;
+        while (true) {
+            $nextId = 'ST-' . $i;
+
+            // Jika sensor_id sudah ada, lanjutkan ke yang berikutnya
+            if (!in_array($nextId, $existingSensors)) {
+                return $nextId; // Kembalikan sensor_id yang tidak terpakai
+            }
+
+            $i++; // Naikkan angka untuk mencoba ID berikutnya
         }
     }
+
     
     // Menampilkan sensor berdasarkan ID
     public function show($sensor_id)

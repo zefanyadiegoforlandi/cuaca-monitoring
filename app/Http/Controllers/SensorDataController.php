@@ -10,8 +10,31 @@ class SensorDataController extends Controller
     // Menampilkan semua data sensor
     public function index()
     {
-        return SensorData::all();
+        try {
+            $data = SensorData::all();
+    
+            if ($data->isEmpty()) {
+                return response()->json([
+                    'status' => 404,
+                    'message' => 'Tidak ada data sensor ditemukan',
+                    'data' => [],
+                ], 404);
+            }
+    
+            return response()->json([
+                'status' => 200,
+                'message' => 'Berhasil menampilkan data',
+                'data' => $data,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 500,
+                'message' => 'Terjadi kesalahan pada server saat menampilkan data',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
     }
+    
 
     // Menyimpan data sensor baru
     public function store(Request $request)
@@ -19,8 +42,7 @@ class SensorDataController extends Controller
         try {
             $request->validate([
                 'sensor_id' => 'required|string|max:255',
-                'altitude' => 'required|numeric',
-                'pressure' => 'required|numeric',
+                'kualitas_udara' => 'required|numeric',
                 'temperature' => 'required|numeric',
                 'humidity' => 'required|numeric',
             ]);
@@ -36,40 +58,95 @@ class SensorDataController extends Controller
     // Menampilkan data sensor berdasarkan ID
     public function show($sensor_data_id)
     {
-        return SensorData::findOrFail($sensor_data_id);
-    }
-
-    // Memperbarui data sensor
-    public function update(Request $request, $sensor_data_id)
-    {
         try {
-            // Cari data sensor berdasarkan sensor_data_id
-            $sensorData = SensorData::findOrFail($sensor_data_id);
-
-            // Validasi input
-            $request->validate([
-                'sensor_id' => 'sometimes|required|string|max:255',
-                'altitude' => 'sometimes|required|numeric',
-                'pressure' => 'sometimes|required|numeric',
-                'temperature' => 'sometimes|required|numeric',
-                'humidity' => 'sometimes|required|numeric',
+            $sensorData = SensorData::find($sensor_data_id);
+    
+            if (!$sensorData) {
+                return response()->json([
+                    'status' => 404,
+                    'message' => 'Data tidak ditemukan',
+                ], 404);
+            }
+    
+            return response()->json([
+                'status' => 200,
+                'message' => 'Berhasil menampilkan data',
+                'data' => $sensorData,
             ]);
-
-            // Update data sensor dengan data yang valid
-            $sensorData->update($request->only(['sensor_id', 'altitude', 'pressure', 'temperature', 'humidity']));
-
-            return response()->json($sensorData);
         } catch (\Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 400);
+            return response()->json([
+                'status' => 500,
+                'message' => 'Terjadi kesalahan pada server',
+                'error' => $e->getMessage(),
+            ], 500);
         }
     }
+    
+
+     // Memperbarui data sensor
+     public function update(Request $request, $sensor_data_id)
+     {
+         // Validasi input
+         $validatedData = $request->validate([
+             'sensor_id' => 'sometimes|required|string|max:255',
+             'kualitas_udara' => 'sometimes|required|numeric',
+             'temperature' => 'sometimes|required|numeric',
+             'humidity' => 'sometimes|required|numeric',
+         ]);
+ 
+         try {
+             // Cari data sensor berdasarkan ID
+             $sensorData = SensorData::find($sensor_data_id);
+ 
+             if (!$sensorData) {
+                 return response()->json([
+                     'status' => 404,
+                     'message' => 'Data tidak ditemukan',
+                 ], 404);
+             }
+ 
+             // Update data sensor
+             $sensorData->update($validatedData);
+ 
+             return response()->json([
+                 'status' => 200,
+                 'message' => 'Berhasil memperbarui data',
+                 'data' => $sensorData,
+             ]);
+         } catch (\Exception $e) {
+             return response()->json([
+                 'status' => 500,
+                 'message' => 'Terjadi kesalahan pada server saat memperbarui data',
+                 'error' => $e->getMessage(),
+             ], 500);
+         }
+     }
 
     // Menghapus data sensor
     public function destroy($sensor_data_id)
     {
-        $sensorData = SensorData::findOrFail($sensor_data_id);
-        $sensorData->delete();
+        try {
+            $sensorData = SensorData::find($sensor_data_id);
 
-        return response()->json(null, 204);
+            if (!$sensorData) {
+                return response()->json([
+                    'status' => 404,
+                    'message' => 'Data tidak ditemukan',
+                ], 404);
+            }
+
+            $sensorData->delete();
+
+            return response()->json([
+                'status' => 204,
+                'message' => 'Data berhasil dihapus',
+            ], 204);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 500,
+                'message' => 'Terjadi kesalahan pada server saat menghapus data',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
     }
 }
