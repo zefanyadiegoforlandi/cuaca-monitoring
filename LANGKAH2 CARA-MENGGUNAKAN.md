@@ -1,27 +1,45 @@
-Ini hanya Backend tidak ada Front-End
-Jika ingin menjalankan docker perlu install docker desktop, bisa download di
-https://www.docker.com/products/docker-desktop/
+Petunjuk Penggunaan
+Deskripsi
+Ini hanya Backend; tidak ada Front-End.
 
-pastikan sudah menjalankan aplikasi docker di windows
+Persyaratan
+Instal Docker Desktop:
 
-pastinkan set seperti ini gunakan XAMPP, database bisa disesuaikan
+Anda perlu menginstal Docker Desktop. Anda dapat mengunduhnya di sini.
+Pastikan Docker Desktop sudah berjalan di Windows.
+Pengaturan Database:
+
+Jika Anda menggunakan XAMPP, pastikan database dalam .env Anda disesuaikan dengan konfigurasi berikut:
 DB_CONNECTION=mysql
 DB_HOST=host.docker.internal
 DB_PORT=3306
 DB_DATABASE=cuaca_database
 DB_USERNAME=root
 DB_PASSWORD=
+Langkah-langkah Menjalankan Proyek
+Jalankan Migrasi Database:
 
-jalankan php artisan migrate (karena database berada di luar container maka perlu menjalankan migrate)
-jalankan projek dengan docker menggunakan perintah docker compose up -d
+Jalankan perintah berikut untuk melakukan migrasi, karena database berada di luar container:
+php artisan migrate
+Jalankan Proyek dengan Docker:
 
-cek apakah laravel berjalan di http://localhost:8080  (port yang digunakan docker http gunakan adalah 8080)
-endpoint yang tersedia :
-GET,POST
-/api/users (http://localhost:8080/api/users)
-GET,POST
-/api/sensors (http://localhost:8080/api/sensors)
-GET,POST
-/api/sensordata (http://localhost:8080/api/sensordata)
+Gunakan perintah berikut untuk menjalankan proyek dengan Docker:
+docker compose up -d
 
-jika berhasil berarti docker tahap development berhasil di jalankan.
+Cek Aplikasi:
+Periksa apakah Laravel berjalan dengan membuka URL berikut di browser:
+arduino
+Salin kode
+http://localhost:8080
+Port yang digunakan oleh Docker adalah 8080.
+Endpoint yang Tersedia
+GET, POST /api/users
+URL: http://localhost:8080/api/users
+GET, POST /api/sensors
+URL: http://localhost:8080/api/sensors
+GET, POST /api/sensordata
+URL: http://localhost:8080/api/sensordata
+
+Verifikasi
+Jika semua langkah di atas berhasil, berarti tahap pengembangan(development) dengan Docker telah berhasil dijalankan.
+
