@@ -7,12 +7,12 @@ Ini hanya Backend; tidak ada Front-End.
 Instal Docker Desktop: Anda perlu menginstal Docker Desktop. Anda dapat mengunduhnya di sini. Pastikan Docker Desktop sudah berjalan di Windows.
 
 Pengaturan Database: Jika Anda menggunakan XAMPP, pastikan database dalam file .env Anda disesuaikan dengan konfigurasi berikut:
-DB_CONNECTION=mysql
-DB_HOST=host.docker.internal
-DB_PORT=3306
-DB_DATABASE=cuaca_database
-DB_USERNAME=root
-DB_PASSWORD=
+# DB_CONNECTION=mysql
+# DB_HOST=host.docker.internal
+# DB_PORT=3306
+# DB_DATABASE=cuaca_database
+# DB_USERNAME=root
+# DB_PASSWORD=
 
 ## Langkah-langkah Menjalankan Proyek
 Jalankan Migrasi Database: Jalankan perintah berikut untuk melakukan migrasi, karena database berada di luar container: php artisan migrate. 
