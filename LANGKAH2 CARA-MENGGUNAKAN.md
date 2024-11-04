@@ -7,6 +7,7 @@ Instal Docker Desktop:
 
 Anda perlu menginstal Docker Desktop. Anda dapat mengunduhnya di sini.
 Pastikan Docker Desktop sudah berjalan di Windows.
+
 Pengaturan Database:
 
 Jika Anda menggunakan XAMPP, pastikan database dalam .env Anda disesuaikan dengan konfigurasi berikut:
